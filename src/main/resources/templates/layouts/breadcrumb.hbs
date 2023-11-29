@@ -1,0 +1,14 @@
+<div class="container-fluid mt-1 ">
+{{#if route}}
+<nav  style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+  <ol class="breadcrumb pb-1" >
+    <li class="breadcrumb-item">
+      <a class=" link-secondary link-offset-2 link-underline-opacity-0" href="/">Home</a>
+    </li>
+    {{#breadcrumb route}} 
+    {{/breadcrumb}}
+  </ol>
+</nav>
+{{/if}}
+</div>
+

@@ -1,0 +1,148 @@
+{{#partial "main"}}
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+
+    <div class="container {{container-class}}">
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+                <div class="text-center mt-5"></div>
+                <table id="table" class="table table-striped border table-light" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Entidad</th>
+                            <th>{{criterio}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each displayItemsRanking}}
+                          <tr>
+                            <td>{{this.nombre}}</td>
+                            <td>{{this.valor}}</td>
+                          </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+
+
+              <button type="button" class="btn btn-primary" id="mostrarModalBtn">
+                Mostrar Gráfico
+              </button>
+
+            </div>
+
+
+          <!-- Modal -->
+          <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="confirmModalLabel">Gráfico Ranking</h5>
+                </div>
+                <div class="modal-body">
+                  <!-- Contenedor del gráfico -->
+                  <canvas id="myChart" width="600" height="400"></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+    </div>
+
+
+
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            var table = $('#table').DataTable({
+                "pagingType": "full_numbers",
+                "language": {
+                    "lengthMenu": "Mostrar _MENU_ comunidades por página",
+                    "zeroRecords": "No se encontraron comunidades",
+                    "info": "Mostrando página _PAGE_ de _PAGES_",
+                    "infoEmpty": "No existen comunidades con ese nombre",
+                    "infoFiltered": "(filtrado de un total de _MAX_ comunidades)",
+                    "search": "Buscar Comunidad:",
+                    "paginate": {
+                        "first": "Primero",
+                        "last": "Último",
+                        "next": "Siguiente",
+                        "previous": "Anterior"
+                    }
+                }
+            });
+
+            // Agregar el evento de búsqueda por comunidad
+            $('#comunidad-filter').on('keyup', function () {
+                table.column(0).search(this.value).draw();
+            });
+        });
+
+         var entidades = [];
+         var promedios = [];
+
+                {{#each displayItemsRanking}}
+                    var nombre = '{{this.nombre}}';
+                    var valor = {{this.valor}};
+
+                    entidades.push(nombre);
+                    promedios.push(valor);
+
+                {{/each}}
+         console.log(entidades)
+         console.log(promedios)
+
+// Función para generar colores aleatorios
+function getRandomColor() {
+    var letters = '0123456789ABCDEF';
+    var color = '#';
+    for (var i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+}
+
+// Crear un arreglo de colores para cada entidad
+var colores = entidades.map((_, index) => getRandomColor());
+
+
+function mostrarModal() {
+    $('#myModal').modal('show');
+
+
+     // Crear el contexto del gráfico
+  var ctx = document.getElementById('myChart').getContext('2d');
+
+         // Configurar el gráfico de barras
+  var myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: entidades,
+      datasets: [{
+        label: 'Promedio de Tiempo de Cierre Incidentes (mins)',
+        data: promedios,
+        backgroundColor: colores,
+        borderColor: colores,
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+
+  };
+
+    document.getElementById('mostrarModalBtn').addEventListener('click', mostrarModal);
+
+    </script>
+{{/partial}}
+{{>layouts/layout}}

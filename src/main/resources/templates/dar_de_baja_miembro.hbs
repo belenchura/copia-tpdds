@@ -1,0 +1,174 @@
+{{#partial "main"}}
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+
+    <div class="container {{container-class}}">
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+                <div class="text-center mt-5"></div>
+                <table id="table" class="table table-striped border table-light" style="width:100%; background-color: #F2F5FF;">
+                    <thead>
+                        <tr>
+                          <th style="width: 80%;">Miembro</th>
+                          <th style="width: 20%;">Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each displayMiembros}}
+                            <tr>
+                                <td>{{this.nombreCompleto}}</td>
+                                <td><button class="btn btn-danger" onclick="mostrarModalConfirmacion({{this.miembro_id}})">Dar de Baja</button></td> <!-- Botón de rechazar -->
+                            </tr>
+                        {{/each}}
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Modal de Confirmación -->
+    <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="confirmModalLabel">Confirmación</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true" onclick="cerrarModalConfirmacion()">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            ¿Estás seguro de que deseas eliminar este miembro?
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" onclick="cerrarModalConfirmacion()">Cancelar</button>
+            <button type="button" class="btn btn-danger" id="confirmDelete">Confirmar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal de Éxito -->
+
+    <div class="modal" id="successModal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Operación Exitosa</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="cerrarModalRespuestaSuccess()">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p id="successMessage"><i class="fas fa-check-circle"></i></p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-success" data-dismiss="modal" onclick="cerrarModalRespuestaSuccess()">Aceptar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal de Error -->
+    <div class="modal" id="errorModal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-body">
+            <p id="errorMessage"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            var table = $('#table').DataTable({
+                "pagingType": "full_numbers",
+                "language": {
+                    "lengthMenu": "Mostrar _MENU_ miembros por página",
+                    "zeroRecords": "No se encontraron miembros",
+                    "info": "Mostrando página _PAGE_ de _PAGES_",
+                    "infoEmpty": "No existen miembros con ese nombre",
+                    "infoFiltered": "(filtrado de un total de _MAX_ miembros)",
+                    "search": "Buscar Miembro:",
+                    "paginate": {
+                        "first": "Primero",
+                        "last": "Último",
+                        "next": "Siguiente",
+                        "previous": "Anterior"
+                    }
+                },
+                "columnDefs": [
+                    {
+                        "targets": -1, // Última columna (botón de rechazar)
+                        "orderable": false, // No se puede ordenar
+                        "searchable": false // No se puede buscar
+                    }
+                ]
+            });
+
+            // Agregar el evento de búsqueda por miembro
+            $('#miembro-filter').on('keyup', function () {
+                table.column(0).search(this.value).draw();
+            });
+        });
+
+
+        function mostrarModalConfirmacion(miembroId) {
+            $('#confirmModal').modal('show'); // Mostrar el modal de confirmación
+
+            $('#confirmDelete').on('click', function () {
+                eliminarMiembro(miembroId);
+            });
+        }
+
+        function cerrarModalConfirmacion() {
+            $('#confirmModal').modal('hide');
+        }
+
+        function cerrarModalRespuestaSuccess() {
+            $('#successModal').modal('hide');
+        }
+
+        // Función genérica para mostrar un modal de éxito
+        function mostrarModalSuccess(mensaje) {
+            $('#successMessage').text(mensaje);
+            $('#successModal').modal('show');
+        }
+
+        // Función genérica para mostrar un modal de error
+        function mostrarModalError(mensaje) {
+            $('#errorMessage').text(mensaje);
+            $('#errorModal').modal('show');
+        }
+
+
+        function eliminarMiembro(miembroId) {
+            console.log("Por eliminar: " + miembroId)
+
+            fetch(`comunidades/miembrosComunidad/${miembroId}`, {
+                method: 'POST',
+            })
+            .then(response => {
+                if (response.ok) {
+                    cerrarModalConfirmacion();
+                    mostrarModalSuccess("Miembro eliminado con éxito")
+                    console.log("Miembro eliminado con éxito");
+                    // Actualizar la tabla u otra lógica según sea necesario
+                } else {
+                    mostrarModalError("Error al eliminar el miembro")
+                    console.error("Error al eliminar el miembro");
+                }
+            })
+            .catch(error => {
+                console.error("Error al eliminar el miembro:", error);
+            });
+        }
+
+    </script>
+{{/partial}}
+{{> layouts/layout}}

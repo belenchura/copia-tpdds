@@ -1,0 +1,88 @@
+{{#partial "main"}}
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+
+    <h1 class="text-center mt-2">Comunidades</h1>
+    <div class="container {{container-class}}">
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+                <div class="text-center mt-3"></div>
+                <table id="table" class="table table-striped border table-light" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Comunidad</th>
+                            <th>Cantidad de Miembros</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each comunidades}}
+                            <tr>
+                                <td>{{nombreComunidad}}</td>
+                                <td>{{cantidadMiembros}}</td>
+                                <td>
+                                    {{#if esMiembro}}
+                                        <button class="btn btn-primary">Unirse</button>
+                                    {{/if}}
+                                </td>
+                            </tr>
+                        {{/each}}
+                        <tr>
+                            <td>Devs in Pyjamas</td>
+                            <td>4</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>Kernel Liquidators</td>
+                            <td>5</td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <style>
+        label{
+            font-family: Arial, sans-serif;
+            color: #C7C9D1;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            var table = $('#table').DataTable({
+                "pagingType": "full_numbers",
+                "language": {
+                    "lengthMenu": "Mostrar _MENU_ comunidades por página",
+                    "zeroRecords": "No se encontraron comunidades",
+                    "info": "Mostrando página _PAGE_ de _PAGES_",
+                    "infoEmpty": "No existen comunidades con ese nombre",
+                    "infoFiltered": "(filtrado de un total de _MAX_ comunidades)",
+                    "search": "Buscar Comunidad:",
+                    "paginate": {
+                        "first": "Primero",
+                        "last": "Último",
+                        "next": "Siguiente",
+                        "previous": "Anterior"
+                    }
+                },
+                "columnDefs": [
+                    {
+                        "targets": -1, // Última columna (botón de rechazar)
+                        "orderable": false, // No se puede ordenar
+                        "searchable": false // No se puede buscar
+                    }
+                ]
+            });
+
+            // Agregar el evento de búsqueda por comunidad
+            $('#comunidad-filter').on('keyup', function () {
+                table.column(0).search(this.value).draw();
+            });
+        });
+    </script>
+{{/partial}}
+{{> layouts/layout}}

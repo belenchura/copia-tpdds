@@ -1,0 +1,13 @@
+{
+    "entities": [
+        {
+            "name": "Linea H",
+            "ammountOfAffectedMembers": 5,
+            "incidents": [
+                {
+                    "resTime": -1 
+                }
+            ]
+        }
+    ]
+}

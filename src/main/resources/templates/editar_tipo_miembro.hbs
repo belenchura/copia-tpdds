@@ -1,0 +1,83 @@
+{{#partial "main"}}
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+
+<h1 class="text-center mt-2">Editar Tipo Miembro</h1>
+  <div class="container {{container-class}}">
+    <div class="row justify-content-center">
+      <div class="col-md-10">
+        <div class="text-center mt-5"></div>
+        <table id="table" class="table table-striped border table-light" style="width:100%">
+          <thead>
+          <tr>
+            <th>Servicio</th>
+            <th>Tipo Miembro</th>
+            <th></th>
+          </tr>
+          </thead>
+          <tbody>
+            {{#each displayServicioMiembro}}
+            <tr>
+            <td>{{this.nombreServicio}}</td>
+            <td>{{this.tipoMiembro}}</td>
+            <td><button class="btn btn-primary cambiar-button" style="background-color: #0D828C; font-family: Arial, sans-serif; color: #F2F9FF;" data-servicio_miembro_id="{{this.servicio_miembro_id}}">X</button></td>
+            </tr>
+            {{/each}}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <style>
+        label{
+            font-family: Arial, sans-serif;
+            color: #C7C9D1;
+        }
+    </style>
+  <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+  <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+    <script>
+      $(document).ready(function () {
+          var table = $('#table').DataTable({
+              "pagingType": "full_numbers",
+              "language": {
+                  "lengthMenu": "Mostrar _MENU_ incidentes por página",
+                  "zeroRecords": "No se encontraron incidentes",
+                  "info": "Mostrando página _PAGE_ de _PAGES_",
+                  "paginate": {
+                      "first": "Primero",
+                      "last": "Último",
+                      "next": "Siguiente",
+                      "previous": "Anterior"
+                  }
+              },
+              "searching": false,
+              "columnDefs": [
+                  {
+                      "targets": -1,
+                      "orderable": false,
+                      "searchable": false
+                  }
+              ]
+          });
+      });
+            $('#table').on('click', '.cambiar-button', function () {
+              var incidentId = $(this).data('servicio_miembro_id');
+              $.post(`/servicioMiembro/${idServicioMiembro}`, function (data) {
+              });
+          });
+    </script>
+    <script>
+
+        document.querySelectorAll("button").forEach(boton=>
+        boton.addEventListener("click",()=>{
+            fetch(`/servicioMiembro/${boton.getAttribute("data-servicio_miembro_id")}`,{method: "POST"})
+            .then(
+              location.reload()
+            )
+            .catch((e)=>console.log(e))
+        }))
+
+    </script>
+  {{/partial}}
+  {{> layouts/layout}}

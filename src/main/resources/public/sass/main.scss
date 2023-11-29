@@ -1,0 +1,13 @@
+//Custom variables
+$primary: #0D828C;
+$light: #F2F5FF; 
+//$danger: green;
+//$dark: #1751FF;
+//Import functions and variables
+@import "../bootstrap/scss/_functions";
+@import "../bootstrap/scss/_variables";
+
+
+
+/// Warning - el import va último
+@import "../bootstrap/scss/bootstrap.scss";

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence
+    http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
+             version="2.0">
+
+    <persistence-unit name="simple-persistence-unit" transaction-type="RESOURCE_LOCAL">
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+
+        <class>models.Entities.MonitoreoServicios.Entidad.Entidad</class>
+        <class>models.Entities.MonitoreoServicios.Entidad.TipoEntidad</class>
+
+        <class>models.Entities.MonitoreoServicios.Establecimiento.Establecimiento</class>
+        <class>models.Entities.MonitoreoServicios.Establecimiento.TipoEstablecimiento</class>
+
+        <class>models.Entities.MonitoreoServicios.OrganismosExternos.EntidadPrestadora</class>
+
+        <class>models.Entities.MonitoreoServicios.Persona.Persona</class>
+
+        <class>models.Entities.MonitoreoServicios.Incidente.Incidente</class>
+
+        <class>models.Entities.MonitoreoServicios.Comunidad.AdministradorComunidad</class>
+        <class>models.Entities.MonitoreoServicios.Comunidad.Comunidad</class>
+        <class>models.Entities.MonitoreoServicios.Comunidad.Miembro</class>
+        <class>models.Entities.MonitoreoServicios.Comunidad.ServicioMiembro</class>
+
+        <class>models.Entities.MonitoreoServicios.Servicio.Servicio</class>
+
+        <class>models.Entities.MonitoreoServicios.OrganismosExternos.OrganismoDeControl</class>
+
+        <class>models.Entities.Notificador.Notificacion</class>
+        <class>models.Entities.MonitoreoServicios.Prestacion</class>
+        <class>models.Entities.MonitoreoServicios.Interes</class>
+
+
+        <class>models.Entities.MonitoreoServicios.Localizacion.Departamento</class>
+        <class>models.Entities.MonitoreoServicios.Localizacion.Localidad</class>
+        <class>models.Entities.MonitoreoServicios.Localizacion.Municipio</class>
+        <class>models.Entities.MonitoreoServicios.Localizacion.Provincia</class>
+
+        <properties>
+            <property name="hibernate.archive.autodetection" value="class"/>
+
+            <property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver" />
+            <property name="hibernate.connection.url" value="${env.DB_URL}" />
+            <property name="hibernate.connection.username" value="${env.DB_USERNAME}" />
+            <property name="hibernate.connection.password" value="${env.DB_PASSWORD}" />
+
+            <!--<property name="hibernate.connection.driver_class" value="org.hsqldb.jdbcDriver"/>
+            <property name="hibernate.connection.url" value="jdbc:hsqldb:mem:app-db"/>
+            <property name="hibernate.connection.username" value="sa"/>
+            <property name="hibernate.connection.password" value=""/>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.HSQLDialect"/>-->
+
+            <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.format_sql" value="true"/>
+            <property name="use_sql_comments" value="true"/>
+            <property name="hibernate.hbm2ddl.auto" value="update"/>
+        </properties>
+
+    </persistence-unit>
+
+</persistence>

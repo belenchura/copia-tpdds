@@ -1,0 +1,32 @@
+{
+    "data":[{
+        "nombre": "Subte H",
+        "direccion": "Santa Fe 152"
+    },
+    {
+        "nombre": "Ferrocarril Roca",
+        "direccion": "Aramburu 123"
+    }],
+    "user": "juan",
+    "route": ["comunidades","comunidad4","administrar"],
+    "title": "Monitoreo de servicios",
+    "servicios":[{
+        "nombre": "jardineria",
+        "cantTareas": 25
+}],
+     "establecimientos":[
+        {"nombre": "Subte H",
+        "ubicacion": "Santa Fe 400"},
+        {"nombre": "BANCO PROVINCIA",
+        "ubicacion": "Av. Rivadavia 325"}
+     ],
+     "test": [{
+        "nombre":"juan",
+        "apellido":"perez"
+        },
+        {"nombre":"pedro",
+        "apellido":"lopez"}],
+        "nombre":"juan",
+        "administradorComunidad": true,
+        "admin" : true
+}

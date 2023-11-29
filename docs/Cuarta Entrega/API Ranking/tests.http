@@ -1,0 +1,43 @@
+GET https://servicio-dds-rankings-dev.fl0.io/rankings
+Content-Type: application/json
+
+{
+    "entities": [
+        {
+            "name": "Linea H",
+            "ammountOfAffectedMembers": 255,
+            "incidents": [
+                {
+                    "resTime": -1 
+                }
+            ]
+        },
+        {
+            "name": "Linea B",
+            "ammountOfAffectedMembers": 11,
+            "incidents": [
+                {
+                    "resTime": 60
+                }
+            ]
+        },
+        {
+            "name": "Linea A",
+            "ammountOfAffectedMembers": 100,
+            "incidents": [
+                {
+                    "resTime": 50 
+                }
+            ]
+        },
+        {
+            "name": "Tren Sarmiento",
+            "ammountOfAffectedMembers": 220,
+            "incidents": [
+                {
+                    "resTime": 130 
+                }
+            ]
+        }
+    ]
+}

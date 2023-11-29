@@ -1,0 +1,82 @@
+{{#partial "main"}}
+
+    <style>
+       
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            margin: 0 auto;
+            width: 50%;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        input[type="submit"] {
+            background-color: #007BFF;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+    </style>
+
+    <h1 class="text-center mt-3">Sugerencia de Revision de Incidente</h1>
+    <form id="sugerenciaForm" action="/incidentes/{{incidente.id}}" method="POST">
+        <div>
+            <p>El servicio {{servicio.nombre}} en el establecimiento {{establecimiento.nombre}} actualmente se encuentra  afectado.</p>
+        </div>
+        <p>¿Esto es correcto?</p>
+        <button type="submit" name="revision" value="Si" class="btn btn-success">Si</button>
+        <button type="submit" name="revision" value="No" class="btn btn-danger">No</button>
+    </form>
+
+  
+{{/partial}}
+{{> layouts/layout }}
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('sugerenciaForm');
+    form.addEventListener('submit', function(event) {
+        event.preventDefault(); // Evita el envío automático del formulario.
+
+        // Obten el botón que se presionó.
+        const botonPresionado = event.submitter;
+
+        // Agrega el valor del botón al formulario como un campo llamado "revision".
+        const revision = botonPresionado.getAttribute('value');
+        const revisionField = document.createElement('input');
+        revisionField.setAttribute('type', 'hidden');
+        revisionField.setAttribute('name', 'revision');
+        revisionField.setAttribute('value', revision);
+
+        // Agrega el campo al formulario.
+        form.appendChild(revisionField);
+
+        // Envía el formulario manualmente.
+        form.submit();
+    });
+});
+</script>

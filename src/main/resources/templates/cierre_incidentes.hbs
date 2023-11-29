@@ -1,0 +1,90 @@
+{{#partial "main"}}
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+
+<h1 class="text-center mt-2">Incidentes abiertos</h1>
+  <div class="container {{container-class}}">
+    <div class="row justify-content-center">
+      <div class="col-md-10">
+        <div class="text-center mt-5"></div>
+        <table id="table" class="table table-striped border table-light" style="width:100%">
+          <thead>
+          <tr>
+            <th>Entidad</th>
+            <th>Establecimiento</th>
+            <th>Servicio</th>
+            <th></th>
+          </tr>
+          </thead>
+          <tbody>
+            {{#each displayIncidentes}}
+            <tr>
+            <td>{{this.nombreEntidad}}</td>
+            <td>{{this.nombreEstablecimiento}}</td>
+            <td>{{this.nombreServicio}}</td>
+            <td><button class="btn btn-primary cerrar-button" style="background-color: #0D828C; font-family: Arial, sans-serif; color: #F2F9FF;" data-incident-id="{{this.incidente_id}}">Cerrar</button></td>
+            </tr>
+            {{/each}}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <style>
+        label{
+            font-family: Arial, sans-serif;
+            color: #C7C9D1;
+        }
+    </style>
+  <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+  <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+
+  <script>
+    $(document).ready(function () {
+        var table = $('#table').DataTable({
+            "pagingType": "full_numbers",
+            "language": {
+                "lengthMenu": "Mostrar _MENU_ incidentes por página",
+                "zeroRecords": "No se encontraron incidentes",
+                "info": "Mostrando página _PAGE_ de _PAGES_",
+                "paginate": {
+                    "first": "Primero",
+                    "last": "Último",
+                    "next": "Siguiente",
+                    "previous": "Anterior"
+                }
+            },
+            "searching": false,
+            "columnDefs": [
+                {
+                    "targets": -1,
+                    "orderable": false,
+                    "searchable": false
+                }
+            ]
+        });
+    });
+          $('#table').on('click', '.cerrar-button', function () {
+            var incidentId = $(this).data('incident-id');
+            $.post(`/incidentes/${incidentId}`, function (data) {
+              console.log('Incidente cerrado:', data);
+            });
+        });
+  </script>
+  <script>
+    
+      document.querySelectorAll("button").forEach(boton=>
+      
+      boton.addEventListener("click",()=>{
+
+          fetch(`/incidentes/${boton.getAttribute("data-incident-id")}`,{method: "PUT"})
+          .then(
+            location.reload()
+          )
+          .catch((e)=>console.log(e))
+      
+      }))
+      
+  </script>
+{{/partial}}
+{{> layouts/layout}}

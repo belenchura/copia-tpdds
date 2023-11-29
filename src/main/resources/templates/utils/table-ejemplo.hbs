@@ -1,0 +1,46 @@
+{{#partial "table-content" }}
+            <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Ubicacion</th> 
+                <th>Boton</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each establecimientos}}
+               <tr>
+                <td>{{nombre}}</td>
+                <td>{{ubicacion}}</td>
+                <td>BOTON</td>
+               </tr>
+            {{/each}}
+            <tr>
+                <td>pelado</td>
+                <td>hAbiaunavez</td>
+                <td>algonoseque</td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <th>Nombre</th>
+                <th>Ubicacion</th>
+                <th>Boton</th>
+            </tr>
+        </tfoot>
+        <style>
+            #table{
+                border: 1px solid red;
+            }
+        </style>
+    
+{{/partial}}
+{{> utils/table table-class="table table-hover table-dark table-striped" container-class="container"}}
+
+<script>
+       new DataTable("#table", {
+        columnDefs: [
+            { orderable: false, targets: [2] },
+            { searchable: false, targets: [2]}
+        ]
+       })
+</script>

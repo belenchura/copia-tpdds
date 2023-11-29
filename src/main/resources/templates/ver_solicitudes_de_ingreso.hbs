@@ -1,0 +1,100 @@
+{{#partial "main"}}
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+                <h3 class="">Las siguientes personas solicitaron unirse a la comunidad {{comunidad}}:</h3>
+                <table id="table" class="table table-striped border table-light" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Solicitante</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each solicitantes}}
+                            <tr>
+                                <td>{{nombreSolicitante}}</td>
+                                <td><button class="btn btn-success">Aceptar</button></td> <!-- Botón de aceptar -->
+                                <td><button class="btn btn-danger">Rechazar</button></td> <!-- Botón de rechazar -->
+                            </tr>
+                        {{/each}}
+                        <tr>
+                            <td>Santi</td>
+                            <td><button class="btn btn-success" style="background-color: #0D828C; font-family: Arial, sans-serif; color: #F2F9FF;">Aceptar</button></td>
+                            <td><button class="btn btn-danger">Rechazar</button></td>
+                        </tr>
+                        <tr>
+                            <td>Valen</td>
+                            <td><button class="btn btn-success" style="background-color: #0D828C; font-family: Arial, sans-serif; color: #F2F9FF;">Aceptar</button></td>
+                            <td><button class="btn btn-danger">Rechazar</button></td>
+                        </tr>
+                        <tr>
+                            <td>Bel</td>
+                            <td><button class="btn btn-success" style="background-color: #0D828C; font-family: Arial, sans-serif; color: #F2F9FF;">Aceptar</button></td>
+                            <td><button class="btn btn-danger">Rechazar</button></td>
+                        </tr>
+                        <tr>
+                            <td>Nico</td>
+                            <td><button class="btn btn-success" style="background-color: #0D828C; font-family: Arial, sans-serif; color: #F2F9FF;">Aceptar</button></td>
+                            <td><button class="btn btn-danger">Rechazar</button></td>
+                        </tr>
+                        <tr>
+                            <td>Mati</td>
+                            <td><button class="btn btn-success" style="background-color: #0D828C; font-family: Arial, sans-serif; color: #F2F9FF;">Aceptar</button></td>
+                            <td><button class="btn btn-danger">Rechazar</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+
+    <style> 
+        label{
+            font-family: Arial, sans-serif;
+            color: #C7C9D1;
+        }
+    </style>
+
+    <script>
+        $(document).ready(function () {
+            var table = $('#table').DataTable({
+                "pagingType": "full_numbers",
+                "language": {
+                    "lengthMenu": "Mostrar _MENU_ solicitantes por página",
+                    "zeroRecords": "No se encontraron solicitantes",
+                    "info": "Mostrando página _PAGE_ de _PAGES_",
+                    "infoEmpty": "No existen solicitantes con ese nombre",
+                    "infoFiltered": "(filtrado de un total de _MAX_ solicitantes)",
+                    "search": "Buscar Solicitante:",
+                    "paginate": {
+                        "first": "Primero",
+                        "last": "Último",
+                        "next": "Siguiente",
+                        "previous": "Anterior"
+                    }
+                },
+                "columnDefs": [
+                    {
+                        "targets": [1, 2], // Columnas de "Aceptar" y "Rechazar"
+                        "orderable": false, // No se pueden ordenar
+                        "searchable": false // No se pueden buscar
+                    }
+                ]
+            });
+
+            // Agregar el evento de búsqueda por solicitante
+            $('#solicitante-filter').on('keyup', function () {
+                table.column(0).search(this.value).draw();
+            });
+        });
+    </script>
+{{/partial}}
+{{> layouts/layout}}

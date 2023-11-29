@@ -1,0 +1,113 @@
+{{#partial "main"}}
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+
+<h1 class="text-center mt-2">Listado de Incidentes</h1>
+  <div class="container {{container-class}}">
+    <div class="row justify-content-center">
+      <div class="col-md-10">
+        <div class="text-center mt-5"></div>
+        <h4>Filtros:</h4>
+        <button id="filtro-boton" class="btn btn-primary m-2">Ver Abiertos</button>
+        <table id="table" class="table table-striped border table-light" style="width:100%">
+          <thead>
+          <tr>
+            <th>Entidad</th>
+            <th>Establecimiento</th>
+            <th>Servicio</th>
+            <th>Estado</th>
+          </tr>
+          </thead>
+          <tbody>
+            {{#each displayIncidentes}}
+            <tr>
+            <td>{{this.nombreEntidad}}</td>
+            <td>{{this.nombreEstablecimiento}}</td>
+            <td>{{this.nombreServicio}}</td>
+            <td>{{#if this.incidente_estado}}Abierto{{else}}Cerrado{{/if}}</td>
+            </tr>
+            {{/each}}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <style>
+        label{
+            font-family: Arial, sans-serif;
+            color: #C7C9D1;
+        }
+    </style>
+  <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+  <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+
+  <script>
+    $(document).ready(function () {
+        var table = $('#table').DataTable({
+            "pagingType": "full_numbers",
+            "language": {
+                "lengthMenu": "Mostrar _MENU_ incidentes por página",
+                "zeroRecords": "No se encontraron incidentes",
+                "info": "Mostrando página _PAGE_ de _PAGES_",
+                "paginate": {
+                    "first": "Primero",
+                    "last": "Último",
+                    "next": "Siguiente",
+                    "previous": "Anterior"
+                }
+            },
+            "searching": false,
+            "columnDefs": [
+                {
+                    "targets": -1,
+                    "orderable": false,
+                    "searchable": false
+                }
+            ]
+        });
+
+        $('#comunidad-filter').on('keyup', function () {
+                    table.column(0).search(this.value).draw();
+                });
+
+                var filterActive = false; // Initialize the filter state to inactive
+
+                    // Function to filter rows based on the content of the column
+                    function filterRowsWithButton() {
+                        table.rows().every(function () {
+                            var rowData = this.data();
+                            var columnValue = rowData[3]; // Replace 0 with the appropriate column index
+
+                            if (!columnValue.includes("C")) {
+                                this.nodes().to$().show(); // Show rows that contain a button
+                            } else {
+                                this.nodes().to$().hide(); // Hide rows that do not contain a button
+                            }
+                        });
+
+                        filterActive = true;
+                    }
+
+                    // Function to remove the filter
+                    function removeButtonFilter() {
+                        table.rows().every(function () {
+                            this.nodes().to$().show(); // Show all rows
+                        });
+
+                        filterActive = false;
+                    }
+
+                    $('#filtro-boton').on('click', function() {
+                        if (filterActive) {
+                            document.getElementById("filtro-boton").innerHTML = "Ver Abiertos"
+                            removeButtonFilter();
+                        } else {
+                            document.getElementById("filtro-boton").innerHTML = "x Ver todos"
+                            filterRowsWithButton();
+                        }
+                    });
+    });
+
+  </script>
+{{/partial}}
+{{> layouts/layout}}

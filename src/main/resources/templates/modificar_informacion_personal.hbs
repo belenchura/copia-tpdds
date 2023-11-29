@@ -1,0 +1,202 @@
+{{#partial "main"}}
+
+
+  <div class="container {{container-class}}">
+    <div class="row justify-content-center">
+      <div class="col-md-12">
+        <!-- Información Personal -->
+        <section>
+          <form>
+            <h2>Modificar datos:</h2>
+            <div class="form-group mb-6">
+              <div class="form-group row mt-3">
+                <label for="nombre" class="col-sm-2 col-form-label">Nombre</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" id="nombre" placeholder="Nombre" readonly>
+                </div>
+              </div>
+
+              <div class="form-group row mt-3">
+                <label for="tipo" class="col-sm-2 col-form-label">Tipo</label>
+                <div class="col-sm-10">
+                  <button class="btn btn-primary dropdown-toggle" type="button" id="tipoDropdown"
+                          data-bs-toggle="dropdown" aria-expanded="false">
+                    Seleccionar una opción
+                  </button>
+                  <ul class="dropdown-menu" aria-labelledby="tipoDropdown">
+                    <li><a class="dropdown-item" href="#" onclick="changeOption('Afectado')">Afectado</a></li>
+                    <li><a class="dropdown-item" href="#" onclick="changeOption('Observador')">Observador</a></li>
+                  </ul>
+                </div>
+              </div>
+
+            </div>
+            <br/>
+            <button class="btn btn-primary" onclick="mostrarModalConfirmacionEditar()">Guardar Cambios</button>
+          </form>
+        </section>
+      </div>
+      <div class="col-md-12">
+        <!-- Línea divisoria -->
+        <hr>
+        <!-- Darse de Baja -->
+        <section>
+          <h2>Baja Comunidad</h2>
+          <p>Si deseas abandonar esta comunidad, puedes hacerlo aquí. Ten en cuenta que esta acción es irreversible.</p>
+          <button class="btn btn-danger" id="btnDarseDeBaja" onClick="mostrarModalConfirmacionDelete(999)">Darse de Baja</button>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Confirmación -->
+  <div class="modal fade" id="confirmModalDelete" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="confirmModalLabel">Confirmación</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true" onclick="cerrarModalConfirmacion()">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          ¿Estás seguro de que deseas darte de baja de esta comunidad?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="cerrarModalConfirmacion()">Cancelar</button>
+          <button type="button" class="btn btn-danger" id="confirmEdit">Confirmar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Confirmación Editar -->
+  <div class="modal fade" id="confirmModalEditar" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="confirmModalLabel">Confirmación</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true" onclick="cerrarModalConfirmacionEditar()">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          ¿Estás seguro de que deseas editar los datos vigentes?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="cerrarModalConfirmacionEditar()">Cancelar</button>
+          <button type="button" class="btn btn-danger" id="confirmDelete">Confirmar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Éxito -->
+
+  <div class="modal" id="successModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Operación Exitosa</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="cerrarModalRespuestaSuccess()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p id="successMessage"><i class="fas fa-check-circle"></i></p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success" data-dismiss="modal" onclick="cerrarModalRespuestaSuccess()">Aceptar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Error -->
+  <div class="modal" id="errorModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-body">
+          <p id="errorMessage"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <script>
+        function changeOption(option) {
+            const dropdownButton = document.getElementById('tipoDropdown');
+            dropdownButton.innerHTML = option;
+        }
+
+        function mostrarModalConfirmacionDelete(miembroId) {
+            $('#confirmModalDelete').modal('show'); // Mostrar el modal de confirmación
+
+            $('#confirmDelete').on('click', function () {
+                eliminarMiembro(miembroId);
+            });
+        }
+
+        function mostrarModalConfirmacionEditar() {
+        console.log("mostrar modal confirm editar")
+            $('#confirmModalEditar').modal('show'); // Mostrar el modal de confirmación
+
+            $('#confirmEdit').on('click', function () {
+                editarMiembro();
+            });
+        }
+
+        function cerrarModalConfirmacionEditar() {
+            $('#confirmModalEditar').modal('hide');
+        }
+
+        function cerrarModalConfirmacionDelete() {
+            $('#confirmModalDelete').modal('hide');
+        }
+
+        function cerrarModalRespuestaSuccess() {
+            $('#successModal').modal('hide');
+        }
+
+        // Función genérica para mostrar un modal de éxito
+        function mostrarModalSuccess(mensaje) {
+            $('#successMessage').text(mensaje);
+            $('#successModal').modal('show');
+        }
+
+        // Función genérica para mostrar un modal de error
+        function mostrarModalError(mensaje) {
+            $('#errorMessage').text(mensaje);
+            $('#errorModal').modal('show');
+        }
+
+
+        function eliminarMiembro(miembroId) {
+            fetch(`/eliminarMiembro`, {
+                method: 'POST',
+                body: `miembroId=${miembroId}`
+            })
+            .then(response => {
+                if (response.ok) {
+                    cerrarModalConfirmacionDelete();
+                    mostrarModalSuccess("Miembro abandonó comunidad con éxito")
+                    console.log("Miembro abandonó comunidad con éxito");
+                    // Actualizar la tabla u otra lógica según sea necesario
+                } else {
+                    mostrarModalError("Error al eliminar el miembro")
+                    console.error("Error al eliminar el miembro");
+                }
+            })
+            .catch(error => {
+                console.error("Error al eliminar el miembro:", error);
+            });
+        }
+
+        function editarMiembro() {
+          console.log("editar")
+        }
+    </script>
+{{/partial}}
+{{> layouts/layout}}
+

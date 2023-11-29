@@ -1,0 +1,81 @@
+{{#partial "main"}}
+<style>
+    h1 {
+        color: #333;
+    }
+
+    form {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        margin: 0 auto;
+        width: 70%;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 5px;
+        color: #333;
+    }
+
+    select {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    .button-container {
+        text-align: right;
+    }
+
+    input[type="submit"] {
+        background-color: #007BFF;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    input[type="submit"]:hover {
+        background-color: #0056b3;
+    }
+
+    #descripcion {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+</style>
+
+<body>
+    <h3 class="text-center" style="color: #0A2472;">Reportar Incidente</h3>
+    <form id="miFormulario" method="POST" action="/incidentes">
+        <div style="background-color: #fff; padding: 10px; display: flex; justify-content: center">
+            <div style="background-color: #007BFF; color: #fff; padding: 5px 10px; border-radius: 5px;">1</div>
+            <div style="background-color: #007BFF; color: #fff; padding: 5px 10px; border-radius: 5px;">2</div>
+            <div style="background-color: #007BFF; color: #fff; padding: 5px 10px; border-radius: 5px;">3</div>
+            <div style="background-color: #007BFF; color: #fff; padding: 5px 10px; border-radius: 5px;">4</div>
+        </div>
+        <label for="descripcion">Contanos qué pasó:</label>
+        <textarea id="descripcion" name="descripcion" rows="4" cols="50"></textarea>
+        <div class="button-container">
+            <input type="submit" class="btn btn-success" style="background-color: #0D828C; font-family: Arial, sans-serif; color: #F2F9FF;" id="submitButton" value="Enviar Reporte">
+        </div>
+    </form>
+    <script>
+        const url = window.location.href;
+        const urlObj = new URL(url);
+        const form = document.getElementById("miFormulario");
+        let prestacionId = urlObj.searchParams.get("prestacion");
+        console.log(prestacionId);
+        form.action=`/incidentes/?prestacion=${prestacionId}`;
+    </script>
+    
+{{/partial}}
+{{> layouts/layout }}
